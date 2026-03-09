@@ -1,0 +1,26 @@
+[project]
+name = "lil-mcp"
+version = "0.1.0"
+description = "MCP server for querying Foursquare Open Places data via SedonaDB"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp[cli]>=1.2.0",
+    "apache-sedona[db]",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.scripts]
+fsq-places = "fsq_places.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/fsq_places"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/fsq_places"]
+
+[tool.hatch.build]
+sources = ["src"]

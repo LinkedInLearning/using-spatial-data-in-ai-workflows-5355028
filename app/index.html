@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>US Airport Explorer</title>
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Left Sidebar: Filters -->
+    <aside id="sidebar">
+      <div class="sidebar-header">
+        <h1>Airport Explorer</h1>
+        <span id="airport-count" class="badge">0 airports</span>
+      </div>
+
+      <div class="filter-section">
+        <h3>Airport Type</h3>
+        <label class="checkbox-label">
+          <input type="checkbox" id="filter-large" checked> Large
+          <span class="dot dot-large"></span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="filter-medium" checked> Medium
+          <span class="dot dot-medium"></span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="filter-small" checked> Small
+          <span class="dot dot-small"></span>
+        </label>
+      </div>
+
+      <div class="filter-section">
+        <h3>State</h3>
+        <input type="text" id="filter-state" placeholder="e.g. CA, TX, NY..." autocomplete="off" maxlength="2">
+        <div id="state-suggestions" class="suggestions-dropdown"></div>
+      </div>
+
+      <div class="filter-section">
+        <h3>Elevation</h3>
+        <div class="range-inputs">
+          <label>Min: <span id="elev-min-label">0</span> ft</label>
+          <input type="range" id="filter-elev-min" min="0" max="15000" value="0" step="100">
+        </div>
+        <div class="range-inputs">
+          <label>Max: <span id="elev-max-label">15000</span> ft</label>
+          <input type="range" id="filter-elev-max" min="0" max="15000" value="15000" step="100">
+        </div>
+      </div>
+
+      <button id="reset-filters" class="btn">Reset Filters</button>
+    </aside>
+
+    <!-- Center: Map -->
+    <main id="map-container">
+      <div id="map"></div>
+    </main>
+
+    <!-- Right Panel: AI Chat -->
+    <aside id="chat-panel">
+      <div class="chat-header">
+        <h2>AI Assistant</h2>
+        <div id="api-key-section">
+          <input type="password" id="groq-key" placeholder="Groq API key">
+          <button id="save-key" class="btn btn-sm">Save</button>
+        </div>
+      </div>
+      <div id="chat-messages">
+        <div class="message assistant">
+          <p>Hello! I can help you explore airports across the United States. Try asking me things like:</p>
+          <ul>
+            <li>"Show me large airports in California"</li>
+            <li>"Fly me to Alaska"</li>
+            <li>"Which airports are above 5,000 ft?"</li>
+            <li>"Show me small airports in Hawaii"</li>
+            <li>"Reset all filters"</li>
+          </ul>
+        </div>
+      </div>
+      <div id="chat-input-area">
+        <input type="text" id="chat-input" placeholder="Ask about airports..." disabled>
+        <button id="chat-send" class="btn btn-primary" disabled>Send</button>
+      </div>
+    </aside>
+  </div>
+
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <script src="airports.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
