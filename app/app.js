@@ -297,6 +297,7 @@ const TOOLS = [
 function executeToolCall(name, args) {
   switch (name) {
     case 'move_map':
+      console.log(args)
       map.flyTo({
         center: [args.longitude, args.latitude],
         zoom: args.zoom,
@@ -305,6 +306,7 @@ function executeToolCall(name, args) {
       return `Map moved to [${args.latitude.toFixed(2)}, ${args.longitude.toFixed(2)}] at zoom ${args.zoom}`;
 
     case 'filter_airports':
+      console.log(args)
       if (args.types) {
         filterLarge.checked = args.types.includes('large_airport');
         filterMedium.checked = args.types.includes('medium_airport');
@@ -323,6 +325,7 @@ function executeToolCall(name, args) {
       return `Filters applied. ${airportCount.textContent} visible.`;
 
     case 'reset_filters':
+      console.log(`All filters reset. ${airportCount.textContent} visible.`)
       resetAllFilters();
       map.flyTo({ center: [-98.5, 39.8], zoom: 4, duration: 2000 });
       return `All filters reset. ${airportCount.textContent} visible.`;

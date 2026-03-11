@@ -1,4 +1,18 @@
+# OS Generated Files
 .DS_Store
-node_modules
-.tmp
-npm-debug.log
+
+# Node.js
+node_modules/
+npm-debug.log*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Temp & Project Files
+.tmp/
+
+# Logs
+agentic/logs/*
+!agentic/logs/.gitkeep
