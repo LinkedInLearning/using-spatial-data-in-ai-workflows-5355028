@@ -17,27 +17,30 @@ The categories table has columns:
 
 import pandas as pd
 
-# Module-level SedonaDB connection (set by load_categories)
+from .categories_taxonomy import CATEGORY_LABELS
+
+# Module-level cache
 _sd = None
 _categories_df = None
 
 
 def load_categories(sd=None) -> pd.DataFrame:
     """
-    Load the Foursquare category taxonomy from the registered SedonaDB view.
+    Load the Foursquare category taxonomy.
 
-    The categories are loaded from the 'categories' view that was registered
-    by setup_database(). If no SedonaDB connection is provided, returns
-    a DataFrame of popular categories as a fallback.
+    The source.coop FSQ Open Places release does not ship a separate
+    categories file, so the taxonomy is sourced from the curated list in
+    categories_taxonomy.CATEGORY_LABELS. category_name (leaf segment) and
+    category_level (depth) are derived from each label.
 
     Args:
-        sd: SedonaDB connection object (optional, uses cached if available)
+        sd: SedonaDB connection (accepted for backwards compatibility, unused)
 
     Returns:
-        DataFrame with category taxonomy
+        DataFrame with columns: category_id, category_name, category_label, category_level
 
     Example:
-        categories_df = load_categories(sd)
+        categories_df = load_categories()
         print(f"Loaded {len(categories_df)} categories")
     """
     global _sd, _categories_df
@@ -48,21 +51,21 @@ def load_categories(sd=None) -> pd.DataFrame:
     if sd is not None:
         _sd = sd
 
-    if _sd is not None:
-        try:
-            result = _sd.sql("""
-                SELECT category_id, category_name, category_label, category_level
-                FROM categories
-            """)
-            _categories_df = result.to_pandas()
-            print(f"Loaded {len(_categories_df)} categories from Foursquare taxonomy")
-            return _categories_df
-        except Exception as e:
-            print(f"Warning: Could not load categories from SedonaDB: {e}")
+    rows = []
+    for label in CATEGORY_LABELS:
+        parts = label.split(' > ')
+        rows.append({
+            'category_id': '',
+            'category_name': parts[-1],
+            'category_label': label,
+            'category_level': len(parts),
+        })
 
-    # Fallback: return empty DataFrame with expected columns
-    print("Warning: Categories not loaded. Call setup_database() first.")
-    _categories_df = pd.DataFrame(columns=['category_id', 'category_name', 'category_label', 'category_level'])
+    _categories_df = pd.DataFrame(
+        rows,
+        columns=['category_id', 'category_name', 'category_label', 'category_level'],
+    )
+    print(f"Loaded {len(_categories_df)} categories from Foursquare taxonomy")
     return _categories_df
 
 
