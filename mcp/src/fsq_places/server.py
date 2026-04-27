@@ -20,7 +20,7 @@ logger = logging.getLogger("fsq-places-mcp")
 
 # Configure AWS environment for anonymous S3 access to FSQ Open Places data
 os.environ["AWS_SKIP_SIGNATURE"] = "true"
-os.environ["AWS_DEFAULT_REGION"] = "us-east-1"
+os.environ["AWS_DEFAULT_REGION"] = "us-west-2"
 
 import sedona.db
 from mcp.server.fastmcp import FastMCP
@@ -51,11 +51,11 @@ def ensure_data_loaded():
     sd = get_db()
     logger.info("Loading Foursquare Open Places data from S3 (this may take a moment)...")
 
-    # Read parquet data from Foursquare Open Places S3 bucket
+    # Read parquet data from the source.coop mirror of FSQ Open Places.
     # Data is licensed under Apache 2.0 - Copyright 2024 Foursquare Labs, Inc.
     # Check releases at: https://docs.foursquare.com/data-products/docs/access-fsq-os-places
     df = sd.read_parquet(
-        "s3://fsq-os-places-us-east-1/release/dt=2025-09-09/places/parquet/"
+        "s3://us-west-2.opendata.source.coop/fused/fsq-os-places/2025-02-06/places/"
     )
 
     # Register as a named view for SQL queries

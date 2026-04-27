@@ -52,6 +52,8 @@ Then add the server to your Claude Desktop config file:
 
 Replace `/ABSOLUTE/PATH/TO/mcp` with your actual project path. Then restart Claude Desktop (Cmd+Q on macOS, not just close the window).
 
+Note: For Windows in the "command" line change the `bin` folder name to `Scripts` (ex. `"/ABSOLUTE/PATH/TO/mcp/.venv/Scripts/python"`)
+
 Verify: click the "+" icon in Claude Desktop and look for "fsq-places" under **Connectors**.
 
 ## How It Works
